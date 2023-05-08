@@ -1,13 +1,13 @@
 window.addEventListener('DOMContentLoaded', function() {
 
     // Tabs
-    
+
 	let tabs = document.querySelectorAll('.tabheader__item'),
 		tabsContent = document.querySelectorAll('.tabcontent'),
 		tabsParent = document.querySelector('.tabheader__items');
 
 	function hideTabContent() {
-        
+
         tabsContent.forEach(item => {
             item.classList.add('hide');
             item.classList.remove('show', 'fade');
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', function() {
         tabsContent[i].classList.remove('hide');
         tabs[i].classList.add('tabheader__item_active');
     }
-    
+
     hideTabContent();
     showTabContent();
 
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function() {
             });
 		}
     });
-    
+
     // Timer
 
     const deadline = '2023-06-11';
@@ -115,7 +115,7 @@ window.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'hidden';
         //clearInterval(modalTimerId);
     }
-    
+
 
     modal.addEventListener('click', (e) => {
         if (e.target === modal || e.target.getAttribute("data-close") == "") {
@@ -155,7 +155,7 @@ window.addEventListener('DOMContentLoaded', function() {
             this.changeToUAH();
 
         }
-    
+
         changeToUAH() {
             this.price *= this.transfer;
         }
@@ -194,11 +194,18 @@ window.addEventListener('DOMContentLoaded', function() {
         return await res.json();
 
     };
-    getResource("http://localhost:3000/menu")
-    .then(data => 
-        data.forEach(({img, altimg, title, descr, price}) => {
-        new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
-    }));
+
+    // getResource("http://localhost:3000/menu")
+    // .then(data => 
+    //     data.forEach(({img, altimg, title, descr, price}) => {
+    //     new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
+    // }));
+    axios.get("http://localhost:3000/menu")
+        .then(data => {
+            data.data.forEach(({img, altimg, title, descr, price}) => {
+                     new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
+            });
+        });
 
     // getResource('http://localhost:3000/menu')
     //     .then(data => createCard(data));
@@ -250,7 +257,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     };
 
-    
+
     function bindPostData(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -262,7 +269,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 margin: 0 auto;
             `;
             form.insertAdjacentElement('afterend', statusMessage);
-        
+
 
 
 
@@ -275,7 +282,7 @@ window.addEventListener('DOMContentLoaded', function() {
             //const json = JSON.stringify(object);
 
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
-            
+
             // new method with fetch API
             // fetch("js/server.php", {
             //     method: "POST",
@@ -297,7 +304,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
             // old method with XMLHttpRequest
-            
+
             // const request = new XMLHttpRequest();
             // request.open('POST', 'js/server.php');
             // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
@@ -356,4 +363,4 @@ window.addEventListener('DOMContentLoaded', function() {
     .then(data => data.json())
     .then(res => console.log(res));
 
-});
+}); 
