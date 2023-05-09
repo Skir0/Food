@@ -363,4 +363,57 @@ window.addEventListener('DOMContentLoaded', function() {
     .then(data => data.json())
     .then(res => console.log(res));
 
+    // slider
+
+    const slides = document.querySelectorAll(".offer__slide"),
+        prev = document.querySelector(".offer__slider-prev"),
+        next = document.querySelector(".offer__slider-next"),
+        total = document.querySelector("#total"),
+        current = document.querySelector("#current");
+    console.log(slides);    
+    let slideIndex = 1;
+
+    showSlides(slideIndex);
+
+    function showSlides() {
+
+        console.log(slideIndex);
+
+        if (slides.length < 10) {
+            total.textContent = `0${slides.length}`;
+        }
+        else {
+            total.textContent = slides.length;
+        }   
+
+        if (slideIndex > slides.length) {
+            slideIndex = 1;
+        }
+        else if (slideIndex < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach(slide => slide.style.display = "none");
+        slides[slideIndex-1].style.display = "block";
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        }
+        else {
+            current.textContent = slideIndex;
+        }   
+    }
+
+    function plusSlides(n) {
+        slideIndex+=n;
+        showSlides();
+    }
+    
+    prev.addEventListener("click", () => plusSlides(-1));
+    next.addEventListener("click", () => plusSlides(1));
+
+    
+
+
+
 }); 
