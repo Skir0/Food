@@ -1,12 +1,12 @@
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
 
     // Tabs
 
-	let tabs = document.querySelectorAll('.tabheader__item'),
-		tabsContent = document.querySelectorAll('.tabcontent'),
-		tabsParent = document.querySelector('.tabheader__items');
+    let tabs = document.querySelectorAll('.tabheader__item'),
+        tabsContent = document.querySelectorAll('.tabcontent'),
+        tabsParent = document.querySelector('.tabheader__items');
 
-	function hideTabContent() {
+    function hideTabContent() {
 
         tabsContent.forEach(item => {
             item.classList.add('hide');
@@ -16,9 +16,9 @@ window.addEventListener('DOMContentLoaded', function() {
         tabs.forEach(item => {
             item.classList.remove('tabheader__item_active');
         });
-	}
+    }
 
-	function showTabContent(i = 0) {
+    function showTabContent(i = 0) {
         tabsContent[i].classList.add('show', 'fade');
         tabsContent[i].classList.remove('hide');
         tabs[i].classList.add('tabheader__item_active');
@@ -27,16 +27,16 @@ window.addEventListener('DOMContentLoaded', function() {
     hideTabContent();
     showTabContent();
 
-	tabsParent.addEventListener('click', function(event) {
-		const target = event.target;
-		if(target && target.classList.contains('tabheader__item')) {
+    tabsParent.addEventListener('click', function (event) {
+        const target = event.target;
+        if (target && target.classList.contains('tabheader__item')) {
             tabs.forEach((item, i) => {
                 if (target == item) {
                     hideTabContent();
                     showTabContent(i);
                 }
             });
-		}
+        }
     });
 
     // Timer
@@ -45,10 +45,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
-            days = Math.floor( (t/(1000*60*60*24)) ),
-            seconds = Math.floor( (t/1000) % 60 ),
-            minutes = Math.floor( (t/1000/60) % 60 ),
-            hours = Math.floor( (t/(1000*60*60) % 24) );
+            days = Math.floor((t / (1000 * 60 * 60 * 24))),
+            seconds = Math.floor((t / 1000) % 60),
+            minutes = Math.floor((t / 1000 / 60) % 60),
+            hours = Math.floor((t / (1000 * 60 * 60) % 24));
 
         return {
             'total': t,
@@ -59,8 +59,8 @@ window.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    function getZero(num){
-        if (num >= 0 && num < 10) { 
+    function getZero(num) {
+        if (num >= 0 && num < 10) {
             return '0' + num;
         } else {
             return num;
@@ -124,7 +124,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.code === "Escape" && modal.classList.contains('show')) { 
+        if (e.code === "Escape" && modal.classList.contains('show')) {
             closeModal();
         }
     });
@@ -179,7 +179,7 @@ window.addEventListener('DOMContentLoaded', function() {
                         <div class="menu__item-cost">Цена:</div>
                         <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                     </div>`;
-            this.parent.append(element); 
+            this.parent.append(element);
 
         }
     }
@@ -195,40 +195,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
     };
 
-    // getResource("http://localhost:3000/menu")
-    // .then(data => 
-    //     data.forEach(({img, altimg, title, descr, price}) => {
-    //     new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
-    // }));
     axios.get("http://localhost:3000/menu")
         .then(data => {
-            data.data.forEach(({img, altimg, title, descr, price}) => {
-                     new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
+            data.data.forEach(({ img, altimg, title, descr, price }) => {
+                new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
             });
         });
-
-    // getResource('http://localhost:3000/menu')
-    //     .then(data => createCard(data));
-
-    // function createCard(data) {
-    //     data.forEach(({img, altimg, title, descr, price}) => {
-    //         const element = document.createElement('div');
-
-    //         element.classList.add("menu__item");
-
-    //         element.innerHTML = `
-    //             <img src=${img} alt=${altimg}>
-    //             <h3 class="menu__item-subtitle">${title}</h3>
-    //             <div class="menu__item-descr">${descr}</div>
-    //             <div class="menu__item-divider"></div>
-    //             <div class="menu__item-price">
-    //                 <div class="menu__item-cost">Цена:</div>
-    //                 <div class="menu__item-total"><span>${price}</span> грн/день</div>
-    //             </div>
-    //         `;
-    //         document.querySelector(".menu .container").append(element);
-    //     });
-    // }
 
     // Forms
 
@@ -247,10 +219,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
         const res = await fetch(url, {
             method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body: data
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: data
         });
 
         return await res.json();
@@ -275,53 +247,18 @@ window.addEventListener('DOMContentLoaded', function() {
 
             const formData = new FormData(form);
 
-            // const object = {};
-            // formData.forEach(function(value, key){
-            //     object[key] = value;
-            // });
-            //const json = JSON.stringify(object);
-
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            // new method with fetch API
-            // fetch("js/server.php", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-type": "application/json"
-            //     },
-            //     body: JSON.stringify(object)
-            // })
             postData("http://localhost:3000/requests", json)
-            .then(data => {
-                console.log(data);
-                showThanksModal(message.success);
-                statusMessage.remove();
-            }).catch(() => {
-                showThanksModal(message.failure);
-            }).finally(() => {
-                form.reset();
-            });
-
-
-            // old method with XMLHttpRequest
-
-            // const request = new XMLHttpRequest();
-            // request.open('POST', 'js/server.php');
-            // request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-
-            // request.send(json);
-
-            // request.addEventListener('load', () => {
-            //     console.log(request);
-            //     if (request.status === 200) {
-            //         console.log(request.response);
-            //         showThanksModal(message.success);
-            //         statusMessage.remove();
-            //         form.reset();
-            //     } else {
-            //         showThanksModal(message.failure);
-            //     }
-            // });
+                .then(data => {
+                    console.log(data);
+                    showThanksModal(message.success);
+                    statusMessage.remove();
+                }).catch(() => {
+                    showThanksModal(message.failure);
+                }).finally(() => {
+                    form.reset();
+                });
         });
     }
 
@@ -348,20 +285,10 @@ window.addEventListener('DOMContentLoaded', function() {
         }, 4000);
     }
 
-    // fetch('https://jsonplaceholder.typicode.com/posts', {
-    //     method: "POST",
-    //     body: JSON.stringify({name: "Alex"}),
-    //     headers: {
-    //         "Content-type": "application/json"
-    //     }
-    // })
-    //   .then(response => response.json())
-    //   .then(json => console.log(json));
-
 
     fetch("http://localhost:3000/menu")
-    .then(data => data.json())
-    .then(res => console.log(res));
+        .then(data => data.json())
+        .then(res => console.log(res));
 
     // slider
 
@@ -369,50 +296,123 @@ window.addEventListener('DOMContentLoaded', function() {
         prev = document.querySelector(".offer__slider-prev"),
         next = document.querySelector(".offer__slider-next"),
         total = document.querySelector("#total"),
-        current = document.querySelector("#current");
-    console.log(slides);    
+        current = document.querySelector("#current"),
+        slidesWrapper = document.querySelector(".offer__slider-wrapper"),
+        slidesField = document.querySelector(".offer__slider-inner"),
+        width = window.getComputedStyle(slidesWrapper).width;
+
     let slideIndex = 1;
+    let offset = 0;
 
-    showSlides(slideIndex);
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+        current.textContent = `0${slideIndex}`;
+    }
+    else {
+        total.textContent = slides.length;
+        current.textContent = slideIndex;
+    }
+    // variant 1
+    // showSlides(slideIndex);
 
-    function showSlides() {
+    // function showSlides() {
 
-        console.log(slideIndex);
+    //     console.log(slideIndex);
 
-        if (slides.length < 10) {
-            total.textContent = `0${slides.length}`;
+    //     if (slides.length < 10) {
+    //         total.textContent = `0${slides.length}`;
+    //     }
+    //     else {
+    //         total.textContent = slides.length;
+    //     }   
+
+    //     if (slideIndex > slides.length) {
+    //         slideIndex = 1;
+    //     }
+    //     else if (slideIndex < 1) {
+    //         slideIndex = slides.length;
+    //     }
+
+    //     slides.forEach(slide => slide.style.display = "none");
+    //     slides[slideIndex-1].style.display = "block";
+
+    //     if (slides.length < 10) {
+    //         current.textContent = `0${slideIndex}`;
+    //     }
+    //     else {
+    //         current.textContent = slideIndex;
+    //     }   
+    // }
+
+    // function plusSlides(n) {
+    //     slideIndex+=n;
+    //     showSlides();
+    // }
+
+    // prev.addEventListener("click", () => plusSlides(-1));
+    // next.addEventListener("click", () => plusSlides(1));
+
+    // variant 2
+    slidesField.style.width = 100 * slides.length + "%";
+    slidesField.style.display = "flex";
+    slidesField.style.transition = "0.5s all";
+
+    slidesWrapper.style.overflow = "hidden";
+    slides.forEach(slide => {
+        slide.style.width = width;
+    });
+
+    next.addEventListener("click", () => {
+
+        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+            offset = 0;
         }
         else {
-            total.textContent = slides.length;
-        }   
+            offset += +width.slice(0, width.length - 2);
+        }
+        slidesField.style.transform = `translateX(-${offset}px)`;
 
-        if (slideIndex > slides.length) {
+        if (slideIndex == slides.length) {
             slideIndex = 1;
         }
-        else if (slideIndex < 1) {
-            slideIndex = slides.length;
+        else {
+            slideIndex++;
         }
-
-        slides.forEach(slide => slide.style.display = "none");
-        slides[slideIndex-1].style.display = "block";
 
         if (slides.length < 10) {
             current.textContent = `0${slideIndex}`;
         }
         else {
             current.textContent = slideIndex;
-        }   
-    }
+        }
+    });
 
-    function plusSlides(n) {
-        slideIndex+=n;
-        showSlides();
-    }
-    
-    prev.addEventListener("click", () => plusSlides(-1));
-    next.addEventListener("click", () => plusSlides(1));
+    prev.addEventListener("click", () => {
 
-    
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+        }
+        else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+        slidesField.style.transform = `translateX(-${offset}px)`;
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        }
+        else {
+            slideIndex--;
+        }
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        }
+        else {
+            current.textContent = slideIndex;
+        }
+    });
+
+
+
 
 
 
